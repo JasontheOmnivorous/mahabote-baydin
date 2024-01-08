@@ -11,3 +11,12 @@ export interface ZataSlice {
   isLoading: boolean;
   error: Error | null;
 }
+
+export interface ZataMappings {
+  [key: string]: string[];
+}
+
+export interface Zata {
+  name: string;
+  specification: string;
+}
