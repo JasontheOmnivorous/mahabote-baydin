@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import birthdayReducer from "./slices/birthdaySlice";
+import zataReducer from "./slices/zataSlice";
 
 export const store = configureStore({
   reducer: {
     birthday: birthdayReducer,
+    zata: zataReducer,
   },
 });
 
