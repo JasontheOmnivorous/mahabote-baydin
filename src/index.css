@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .text-outline {
+    -webkit-text-stroke: 1px gray;
+    color: white;
+  }
+}
