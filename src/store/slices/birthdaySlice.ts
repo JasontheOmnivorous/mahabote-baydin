@@ -38,6 +38,8 @@ const birthdaySlice = createSlice({
           state.burmeseBirthyear = year - 639;
         } else if (month === 4 && day > 16) {
           state.burmeseBirthyear = year - 638;
+        } else {
+          state.burmeseBirthyear = year - 638;
         }
       } else {
         state.burmeseBirthyear = year - 638;
