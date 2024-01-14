@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { calculateBirthday } from "../store/slices/birthdaySlice";
 import { calculateZata } from "../store/slices/zataSlice";
 import Galaxy from "./../assets/galaxy.png";
-import Unauthorized from "./Unauthorized";
 
 const Home = () => {
   const [date, setDate] = useState<string>("");
@@ -17,6 +17,7 @@ const Home = () => {
     (store) => store.zata.specifications
   );
   const isAuthenticated = localStorage.getItem("authToken");
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(calculateBirthday(date));
@@ -26,7 +27,7 @@ const Home = () => {
     dispatch(calculateZata({ burmeseBirthyear, dayOfWeek }));
   }, [burmeseBirthyear, dayOfWeek]);
 
-  if (!isAuthenticated) return <Unauthorized />;
+  if (!isAuthenticated) navigate("/unauthorized");
 
   return (
     <div className="w-auto h-auto flex flex-col items-center justify-center p-5">
