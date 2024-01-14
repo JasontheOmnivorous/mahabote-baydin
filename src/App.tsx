@@ -1,68 +1,58 @@
-import { useEffect, useState } from "react";
-import Galaxy from "./assets/galaxy.png";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { calculateBirthday } from "./store/slices/birthdaySlice";
-import { calculateZata } from "./store/slices/zataSlice";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useState } from "react";
 
 const App = () => {
-  const [date, setDate] = useState<string>("");
-  const dispatch = useAppDispatch();
-  const burmeseBirthyear = useAppSelector(
-    (store) => store.birthday.burmeseBirthyear
-  );
-  const dayOfWeek = useAppSelector((store) => store.birthday.dayOfWeek);
-  const zata = useAppSelector((store) => store.zata.name);
-  const zataSpecifications = useAppSelector(
-    (store) => store.zata.specifications
-  );
-
-  useEffect(() => {
-    dispatch(calculateBirthday(date));
-  }, [date]);
-
-  useEffect(() => {
-    dispatch(calculateZata({ burmeseBirthyear, dayOfWeek }));
-  }, [burmeseBirthyear, dayOfWeek]);
+  const [error, setError] = useState<boolean>(false);
+  const login = useGoogleLogin({
+    onSuccess: (token) => localStorage.setItem("authToken", token.access_token),
+    onError: () => setError(true),
+  });
 
   return (
-    <div className="w-auto h-auto flex flex-col items-center justify-center p-5">
-      <img className="w-60 h-auto p-5" src={Galaxy} alt="galaxy" />
-      <input
-        className="focus:outline-red-500 p-2 rounded-xl border border-gray-400"
-        onChange={(evt) => setDate(evt.target.value)}
-        type="date"
-      />
-      <div className="m-5 text-orange-600">
-        မြန်မာမွေးသက္ကရာဇ် - {burmeseBirthyear}
+    <div>
+      <div className="flex flex-col items-center justify-center">
+        <p className="m-10 text-2xl text-red-700">
+          Find out more about yourself using burmese astrology.
+        </p>
+        <img
+          className="m-8 w-[90%] lg:w-[80%] md:w-[80%] h-auto rounded-xl shadow-lg"
+          src="https://asiasociety.org/mahabote_quiz/full_zodiac.jpg"
+          alt="astrology-themed-pic"
+        />
+        <p className="m-10 text-3xl text-amber-700">
+          Where ancient wisdom meets technology.
+        </p>
+        <button
+          onClick={() => login()}
+          className="border border-amber-700 p-2 mb-8 text-amber-700 rounded-md hover:border-amber-500 hover:text-amber-500"
+        >
+          Sign in to start exploring →
+        </button>
       </div>
-      <div className={`${burmeseBirthyear ? "" : "hidden"} m-5 font-bold`}>
-        <div className="m-2">
-          နေ့နံ -{" "}
-          <span
-            className={`${
-              dayOfWeek === "တနင်္ဂနွေ"
-                ? "text-red-600"
-                : dayOfWeek === "တနင်္လာ"
-                ? "text-sky-200"
-                : dayOfWeek === "အင်္ဂါ"
-                ? "text-amber-900"
-                : dayOfWeek === "ဗုဒ္ဓဟူး"
-                ? "text-green-500"
-                : dayOfWeek === "ကြာသပတေး"
-                ? "text-black"
-                : dayOfWeek === "သောကြာ"
-                ? "text-outline"
-                : dayOfWeek === "စနေ"
-                ? "text-red-800"
-                : ""
-            } text-2xl`}
-          >
-            {dayOfWeek}
+      {error && (
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded absolute bottom-0 left-0"
+          role="alert"
+        >
+          <strong className="font-bold">Holy smokes!</strong>
+          <span className="block sm:inline">
+            Your Google credentials aren't working.
           </span>
+          <button onClick={() => setError(false)}>
+            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+              <svg
+                className="fill-current h-6 w-6 text-red-500"
+                role="button"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <title>Close</title>
+                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+              </svg>
+            </span>
+          </button>
         </div>
-        <div className="m-2 font-bold ">ဖွားဇာတာ - {zata}</div>
-        <div className="m-2">{zataSpecifications}</div>
-      </div>
+      )}
     </div>
   );
 };
