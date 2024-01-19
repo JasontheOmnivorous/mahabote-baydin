@@ -1,4 +1,5 @@
 import { useGoogleLogin } from "@react-oauth/google";
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +9,7 @@ const App = () => {
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      localStorage.setItem("authToken", tokenResponse.access_token);
+      Cookies.set("authToken", tokenResponse.access_token, { expires: 7 });
       navigate("/home");
     },
     onError: (errorResponse) => console.log(errorResponse),

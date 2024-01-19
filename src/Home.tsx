@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import Unauthorized from "./Unauthorized";
 import Galaxy from "./assets/galaxy.png";
@@ -16,7 +17,7 @@ const Home = () => {
   const zataSpecifications = useAppSelector(
     (store) => store.zata.specifications
   );
-  const isAuthenticated = localStorage.getItem("authToken");
+  const isAuthenticated = Cookies.get("authToken");
 
   useEffect(() => {
     dispatch(calculateBirthday(date));
