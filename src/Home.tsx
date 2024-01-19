@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Unauthorized from "./Unauthorized";
 import Galaxy from "./assets/galaxy.png";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { calculateBirthday } from "./store/slices/birthdaySlice";
@@ -15,7 +16,7 @@ const Home = () => {
   const zataSpecifications = useAppSelector(
     (store) => store.zata.specifications
   );
-  // const isAuthenticated = localStorage.getItem("authToken");
+  const isAuthenticated = localStorage.getItem("authToken");
 
   useEffect(() => {
     dispatch(calculateBirthday(date));
@@ -25,7 +26,7 @@ const Home = () => {
     dispatch(calculateZata({ burmeseBirthyear, dayOfWeek }));
   }, [burmeseBirthyear, dayOfWeek]);
 
-  // if (!isAuthenticated) return <Unauthorized />;
+  if (!isAuthenticated) return <Unauthorized />;
 
   return (
     <div className="w-auto h-auto flex flex-col items-center justify-center p-5">
